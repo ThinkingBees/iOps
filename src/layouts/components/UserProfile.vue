@@ -1,44 +1,39 @@
 <script setup lang="ts">
 import { PerfectScrollbar } from 'vue3-perfect-scrollbar'
+import { client } from '@/composables/useDirectus'
 import avatar1 from '@images/avatars/avatar-1.png'
+
+const router = useRouter()
+
+onMounted(() => {
+  if (!sessionStorage.getItem('usersInfo'))
+    router.push('/login')
+})
+
+const user = JSON.parse(sessionStorage.getItem('usersInfo'))
 
 const userProfileList = [
   { type: 'divider' },
   {
     type: 'navItem',
     icon: 'ri-user-line',
-    title: 'Profile',
-    value: 'profile',
-  },
-  {
-    type: 'navItem',
-    icon: 'ri-settings-4-line',
-    title: 'Settings',
-    value: 'settings',
-  },
-  {
-    type: 'navItem',
-    icon: 'ri-file-text-line',
-    title: 'Billing Plan',
-    value: 'billing',
-    badgeProps: { color: 'error', content: '4' },
-  },
-  { type: 'divider' },
-  {
-    type: 'navItem',
-    icon: 'ri-money-dollar-circle-line',
-    title: 'Pricing',
-    value: 'pricing',
-  },
-  {
-    type: 'navItem',
-    icon: 'ri-question-line',
-    title: 'FAQ',
-    value: 'faq',
+    title: 'Admin',
+    value: 'admin',
   },
   { type: 'divider' },
 
 ]
+
+const logout = async () => {
+  try {
+    const response = await client.logout()
+
+    console.log(response)
+  }
+  catch (e) {
+    console.log(e)
+  }
+}
 </script>
 
 <template>
@@ -86,11 +81,8 @@ const userProfileList = [
             </template>
 
             <h6 class="text-sm font-weight-medium">
-              John Doe
+              {{ `${user.first_name} ${user.last_name}` }}
             </h6>
-            <VListItemSubtitle class="text-capitalize text-disabled">
-              Admin
-            </VListItemSubtitle>
           </VListItem>
 
           <PerfectScrollbar :options="{ wheelPropagation: false }">
@@ -133,7 +125,7 @@ const userProfileList = [
                 block
                 color="error"
                 append-icon="ri-logout-box-r-line"
-                to="/login"
+                @click="logout"
               >
                 Logout
               </VBtn>

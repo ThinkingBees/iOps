@@ -21,18 +21,25 @@ const buttonList = [
 </script>
 
 <template>
-  <div class="d-flex align-center h-100">
-    <div class="mx-auto">
+  <div class="d-flex align-center h-100 flex-column">
+    <div class="my-auto">
+      <VImg
+        src="/images/logo-2.png"
+        height="200"
+        class="mx-auto"
+      />
       <VRow>
         <VCol
           v-for="(item, index) in buttonList"
           :key="index"
           cols="12"
-          lg="4"
-          md="6"
+          md="4"
         >
           <VCard
+            class="mx-auto"
             :href="item.link"
+            target="_blank"
+            rel="noopener noreferrer"
             style=" max-inline-size: 350px;min-block-size: 300px; min-inline-size: 300px;"
           >
             <VCardText>

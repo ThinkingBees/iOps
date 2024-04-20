@@ -47,7 +47,7 @@ watch([isFallbackStateActive, refLoadingIndicator], () => {
         :languages="themeConfig.app.i18n.langConfig"
       />
 
-      <NavbarThemeSwitcher class="me-2" />
+      <!-- <NavbarThemeSwitcher class="me-2" /> -->
       <UserProfile />
     </template>
 

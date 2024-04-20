@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { readMe } from '@directus/sdk'
 import AppLoadingIndicator from '@/components/AppLoadingIndicator.vue'
 import { client } from '@/composables/useDirectus'
 import tree1 from '@images/misc/tree1.png'
@@ -44,8 +45,11 @@ const requestLogin = async () => {
   try {
     const response = await client.login(form.value.email, form.value.password)
 
-    console.log(response)
     sessionStorage.setItem('access_token', response.access_token)
+
+    const users = await client.request(readMe())
+
+    sessionStorage.setItem('usersInfo', JSON.stringify(users))
     router.push('/')
   }
   catch (e) {
