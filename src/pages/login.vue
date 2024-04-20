@@ -45,7 +45,7 @@ const requestLogin = async () => {
     const response = await client.login(form.value.email, form.value.password)
 
     console.log(response)
-
+    sessionStorage.setItem('access_token', response.access_token)
     router.push('/')
   }
   catch (e) {
