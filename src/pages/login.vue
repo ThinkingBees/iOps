@@ -1,8 +1,6 @@
 <script setup lang="ts">
-import AuthProvider from '@/views/pages/authentication/AuthProvider.vue'
-
-import { themeConfig } from '@themeConfig'
-
+import AppLoadingIndicator from '@/components/AppLoadingIndicator.vue'
+import { client } from '@/composables/useDirectus'
 import tree1 from '@images/misc/tree1.png'
 import authV2LoginIllustrationBorderedDark from '@images/pages/auth-v2-login-illustration-bordered-dark.png'
 import authV2LoginIllustrationBorderedLight from '@images/pages/auth-v2-login-illustration-bordered-light.png'
@@ -11,8 +9,10 @@ import authV2LoginIllustrationLight from '@images/pages/auth-v2-login-illustrati
 import authV2MaskDark from '@images/pages/mask-v2-dark.png'
 import authV2MaskLight from '@images/pages/mask-v2-light.png'
 import { VNodeRenderer } from '@layouts/components/VNodeRenderer'
+import { themeConfig } from '@themeConfig'
 
 const router = useRouter()
+const loading = ref(false)
 
 const authThemeImg = useGenerateImageVariant(
   authV2LoginIllustrationLight,
@@ -22,6 +22,7 @@ const authThemeImg = useGenerateImageVariant(
   true)
 
 const authThemeMask = useGenerateImageVariant(authV2MaskLight, authV2MaskDark)
+const AppLoadingIndicatorRef = ref()
 
 const form = ref({
   email: '',
@@ -36,6 +37,25 @@ definePage({
     layout: 'blank',
   },
 })
+
+const requestLogin = async () => {
+  loading.value = true
+  AppLoadingIndicatorRef.value.fallbackHandle()
+  try {
+    const response = await client.login(form.value.email, form.value.password)
+
+    console.log(response)
+
+    router.push('/')
+  }
+  catch (e) {
+    console.log(e)
+  }
+  finally {
+    AppLoadingIndicatorRef.value.resolveHandle()
+    loading.value = false
+  }
+}
 </script>
 
 <template>
@@ -94,11 +114,11 @@ definePage({
             Welcome to {{ themeConfig.app.title }}! 👋🏻
           </h4>
           <p class="mb-0">
-            Please sign-in to your account and start the adventure
+            Please sign-in to your account
           </p>
         </VCardText>
         <VCardText>
-          <VForm @submit.prevent="router.push('/')">
+          <VForm @submit.prevent="requestLogin">
             <VRow>
               <!-- email -->
               <VCol cols="12">
@@ -121,63 +141,23 @@ definePage({
                   :append-inner-icon="isPasswordVisible ? 'ri-eye-off-line' : 'ri-eye-line'"
                   @click:append-inner="isPasswordVisible = !isPasswordVisible"
                 />
+              </VCol>
 
-                <div class="d-flex align-center flex-wrap justify-space-between my-5 gap-4">
-                  <VCheckbox
-                    v-model="form.remember"
-                    label="Remember me"
-                  />
-                  <a
-                    class="text-primary"
-                    href="#"
-                  >
-                    Forgot Password?
-                  </a>
-                </div>
-
+              <VCol cols="12">
                 <VBtn
                   block
-                  type="submit"
+                  @click="requestLogin"
                 >
                   Login
                 </VBtn>
-              </VCol>
-
-              <!-- create account -->
-              <VCol
-                cols="12"
-                class="text-center text-base"
-              >
-                <span>New on our platform?</span>
-                <a
-                  class="text-primary"
-                  href="#"
-                >
-                  Create an account
-                </a>
-              </VCol>
-
-              <VCol
-                cols="12"
-                class="d-flex align-center"
-              >
-                <VDivider />
-                <span class="mx-2 text-high-emphasis">or</span>
-                <VDivider />
-              </VCol>
-
-              <!-- auth providers -->
-              <VCol
-                cols="12"
-                class="text-center"
-              >
-                <AuthProvider />
               </VCol>
             </VRow>
           </VForm>
         </VCardText>
       </VCard>
     </VCol>
+
+    <AppLoadingIndicator ref="AppLoadingIndicatorRef" />
   </VRow>
 </template>
 
