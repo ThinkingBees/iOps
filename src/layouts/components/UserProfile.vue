@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { PerfectScrollbar } from 'vue3-perfect-scrollbar'
-import { client } from '@/composables/useDirectus'
-import avatar1 from '@images/avatars/avatar-1.png'
+import { client } from '@/composables/useDirectus';
+import avatar1 from '@images/avatars/avatar-1.png';
+import { PerfectScrollbar } from 'vue3-perfect-scrollbar';
 
 const router = useRouter()
 
@@ -12,17 +12,7 @@ onMounted(() => {
 
 const user = JSON.parse(sessionStorage.getItem('usersInfo'))
 
-const userProfileList = [
-  { type: 'divider' },
-  {
-    type: 'navItem',
-    icon: 'ri-user-line',
-    title: 'Admin',
-    value: 'admin',
-  },
-  { type: 'divider' },
-
-]
+const accessToken = sessionStorage.getItem('access_token')
 
 const logout = async () => {
   try {
@@ -86,40 +76,18 @@ const logout = async () => {
           </VListItem>
 
           <PerfectScrollbar :options="{ wheelPropagation: false }">
-            <template
-              v-for="item in userProfileList"
-              :key="item.title"
-            >
-              <VListItem
-                v-if="item.type === 'navItem'"
-                :value="item.value"
-              >
-                <template #prepend>
-                  <VIcon
-                    :icon="item.icon"
-                    size="22"
-                  />
-                </template>
+            <VDivider/>
+            <VListItem :href="`https://admin.potranscorp.com?access_token=${accessToken}`">
+              <template #prepend>
+                <VIcon
+                  icon="ri-user-line"
+                  size="22"
+                />
+              </template>
 
-                <VListItemTitle>{{ item.title }}</VListItemTitle>
-
-                <template
-                  v-if="item.badgeProps"
-                  #append
-                >
-                  <VBadge
-                    inline
-                    v-bind="item.badgeProps"
-                  />
-                </template>
-              </VListItem>
-
-              <VDivider
-                v-else
-                class="my-1"
-              />
-            </template>
-
+              <VListItemTitle>Admin</VListItemTitle>
+            </VListItem>
+            <VDivider/>
             <VListItem>
               <VBtn
                 block
