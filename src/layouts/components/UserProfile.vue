@@ -77,7 +77,7 @@ const logout = async () => {
 
           <PerfectScrollbar :options="{ wheelPropagation: false }">
             <VDivider/>
-            <VListItem :href="`https://admin.potranscorp.com?access_token=${accessToken}`">
+            <VListItem :href="`https://admin.potranscorp.com/login?access_token=${accessToken}`">
               <template #prepend>
                 <VIcon
                   icon="ri-user-line"
