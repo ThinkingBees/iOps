@@ -2,7 +2,7 @@
 import { readMe } from '@directus/sdk'
 import AppLoadingIndicator from '@/components/AppLoadingIndicator.vue'
 import { client } from '@/composables/useDirectus'
-import tree1 from '@images/misc/tree1.png'
+import buslogin from '@images/buslogin.png'
 import authV2LoginIllustrationBorderedDark from '@images/pages/auth-v2-login-illustration-bordered-dark.png'
 import authV2LoginIllustrationBorderedLight from '@images/pages/auth-v2-login-illustration-bordered-light.png'
 import authV2LoginIllustrationDark from '@images/pages/auth-v2-login-illustration-dark.png'
@@ -77,28 +77,11 @@ const requestLogin = async () => {
   >
     <VCol
       md="8"
-      class="d-none d-md-flex position-relative"
+      class="d-none d-md-flex"
     >
-      <div class="d-flex align-center justify-end w-100 h-100 pa-10 pe-0">
-        <VImg
-          max-width="797"
-          :src="authThemeImg"
-          class="auth-illustration"
-        />
-      </div>
-
-      <img
-        class="auth-footer-mask"
-        height="360"
-        :src="authThemeMask"
-      >
-
       <VImg
-        :src="tree1"
+        :src="buslogin"
         alt="tree image"
-        height="190"
-        width="90"
-        class="auth-footer-tree"
       />
     </VCol>
 
