@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { processLogout } from '@/composables/useDirectus'
+
 const accessToken = sessionStorage.getItem('access_token')
 const refreshToken = sessionStorage.getItem('refresh_token')
 
@@ -19,6 +21,25 @@ const buttonList = [
     link: `https://tripmis.potranscorp.com/login/?access_token=${accessToken}&refresh_token=${refreshToken}`,
   },
 ]
+
+onMounted(async () => {
+  try {
+    const response = await fetch('https://api.potranscorp.com/users/me', {
+      method: 'GET',
+      headers: {
+        Authorization: `Bearer ${accessToken}`,
+      },
+    })
+
+    const user = (await response.json()).data
+
+    sessionStorage.setItem('usersInfo', JSON.stringify(user))
+  }
+  catch (e) {
+    console.log(e)
+    processLogout()
+  }
+})
 </script>
 
 <template>
