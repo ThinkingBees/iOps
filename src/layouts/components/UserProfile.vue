@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { client } from '@/composables/useDirectus';
-import avatar1 from '@images/avatars/avatar-1.png';
-import { PerfectScrollbar } from 'vue3-perfect-scrollbar';
+import { PerfectScrollbar } from 'vue3-perfect-scrollbar'
+import { processLogout } from '@/composables/useDirectus'
+import avatar1 from '@images/avatars/avatar-1.png'
 
 const router = useRouter()
 
@@ -14,15 +14,10 @@ const user = JSON.parse(sessionStorage.getItem('usersInfo'))
 
 const accessToken = sessionStorage.getItem('access_token')
 
-const logout = async () => {
-  try {
-    const response = await client.logout()
+const submitLogout = async () => {
+  await processLogout()
 
-    console.log(response)
-  }
-  catch (e) {
-    console.log(e)
-  }
+  router.push('/login')
 }
 </script>
 
@@ -76,7 +71,7 @@ const logout = async () => {
           </VListItem>
 
           <PerfectScrollbar :options="{ wheelPropagation: false }">
-            <VDivider/>
+            <VDivider />
             <VListItem :href="`https://admin.potranscorp.com/login?access_token=${accessToken}`">
               <template #prepend>
                 <VIcon
@@ -87,13 +82,13 @@ const logout = async () => {
 
               <VListItemTitle>Admin</VListItemTitle>
             </VListItem>
-            <VDivider/>
+            <VDivider />
             <VListItem>
               <VBtn
                 block
                 color="error"
                 append-icon="ri-logout-box-r-line"
-                @click="logout"
+                @click="submitLogout"
               >
                 Logout
               </VBtn>

@@ -46,10 +46,12 @@ const requestLogin = async () => {
     const response = await client.login(form.value.email, form.value.password)
 
     sessionStorage.setItem('access_token', response.access_token)
+    sessionStorage.setItem('refresh_token', response.refresh_token)
 
     const users = await client.request(readMe())
 
     sessionStorage.setItem('usersInfo', JSON.stringify(users))
+
     router.push('/')
   }
   catch (e) {
@@ -133,6 +135,7 @@ const requestLogin = async () => {
               <VCol cols="12">
                 <VBtn
                   block
+                  :loading="loading"
                   @click="requestLogin"
                 >
                   Login
