@@ -9,3 +9,4 @@ services:
     image: vue-app
     ports:
       - 8084:80
+    restart: always
