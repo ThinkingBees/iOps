@@ -110,6 +110,7 @@ declare global {
   const pausableWatch: typeof import('@vueuse/core')['pausableWatch']
   const prefixWithPlus: typeof import('./src/@core/utils/formatters')['prefixWithPlus']
   const processLogout: typeof import('./src/composables/useDirectus')['processLogout']
+  const processRefreshToken: typeof import('./src/composables/useDirectus')['processRefreshToken']
   const provide: typeof import('vue')['provide']
   const provideLocal: typeof import('@vueuse/core')['provideLocal']
   const reactify: typeof import('@vueuse/core')['reactify']

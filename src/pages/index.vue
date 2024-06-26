@@ -2,23 +2,22 @@
 import { processLogout } from '@/composables/useDirectus'
 
 const accessToken = sessionStorage.getItem('access_token')
-const refreshToken = sessionStorage.getItem('refresh_token')
 
 const buttonList = [
   {
     name: 'HRIS',
     logo: '/images/logo/hris-logo.png',
-    link: `https://hris.potranscorp.com/login/?access_token=${accessToken}&refresh_token=${refreshToken}`,
+    link: `https://hris.potranscorp.com/login/?access_token=${accessToken}`,
   },
   {
     name: 'BusMIS',
     logo: '/images/logo/busmis-logo.png',
-    link: `https://busmis.potranscorp.com/login/?access_token=${accessToken}&refresh_token=${refreshToken}`,
+    link: `https://busmis.potranscorp.com/login/?access_token=${accessToken}`,
   },
   {
     name: 'TripMIS',
     logo: '/images/logo/tripmis-logo.png',
-    link: `https://tripmis.potranscorp.com/login/?access_token=${accessToken}&refresh_token=${refreshToken}`,
+    link: `https://tripmis.potranscorp.com/login/?access_token=${accessToken}`,
   },
 ]
 
