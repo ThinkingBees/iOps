@@ -25,6 +25,8 @@ const authThemeImg = useGenerateImageVariant(
 const authThemeMask = useGenerateImageVariant(authV2MaskLight, authV2MaskDark)
 const AppLoadingIndicatorRef = ref()
 
+const refForm = ref<VForm>()
+
 const form = ref({
   email: '',
   password: '',
@@ -40,26 +42,28 @@ definePage({
 })
 
 const requestLogin = async () => {
-  loading.value = true
-  AppLoadingIndicatorRef.value.fallbackHandle()
-  try {
-    const response = await client.login(form.value.email, form.value.password)
+  if (refForm.value.isValid) {
+    loading.value = true
+    AppLoadingIndicatorRef.value.fallbackHandle()
+    try {
+      const response = await client.login(form.value.email, form.value.password)
 
-    sessionStorage.setItem('access_token', response.access_token)
-    sessionStorage.setItem('refresh_token', response.refresh_token)
+      sessionStorage.setItem('access_token', response.access_token)
+      sessionStorage.setItem('refresh_token', response.refresh_token)
 
-    const users = await client.request(readMe())
+      const users = await client.request(readMe())
 
-    sessionStorage.setItem('usersInfo', JSON.stringify(users))
+      sessionStorage.setItem('usersInfo', JSON.stringify(users))
 
-    router.push('/')
-  }
-  catch (e) {
-    console.log(e)
-  }
-  finally {
-    AppLoadingIndicatorRef.value.resolveHandle()
-    loading.value = false
+      router.push('/')
+    }
+    catch (e) {
+      console.log(e)
+    }
+    finally {
+      AppLoadingIndicatorRef.value.resolveHandle()
+      loading.value = false
+    }
   }
 }
 </script>
@@ -107,7 +111,10 @@ const requestLogin = async () => {
           </p>
         </VCardText>
         <VCardText>
-          <VForm @submit.prevent="requestLogin">
+          <VForm
+            ref="refForm"
+            @submit.prevent="requestLogin"
+          >
             <VRow>
               <!-- email -->
               <VCol cols="12">
@@ -117,6 +124,7 @@ const requestLogin = async () => {
                   label="Email"
                   type="email"
                   placeholder="johndoe@email.com"
+                  :rules="[requiredValidator, emailValidator]"
                 />
               </VCol>
 
@@ -128,6 +136,7 @@ const requestLogin = async () => {
                   placeholder="············"
                   :type="isPasswordVisible ? 'text' : 'password'"
                   :append-inner-icon="isPasswordVisible ? 'ri-eye-off-line' : 'ri-eye-line'"
+                  :rules="[requiredValidator]"
                   @click:append-inner="isPasswordVisible = !isPasswordVisible"
                 />
               </VCol>
